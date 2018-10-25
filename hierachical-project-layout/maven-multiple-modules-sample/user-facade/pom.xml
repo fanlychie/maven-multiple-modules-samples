@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- parent:
+         声明父模块。
+         relativePath:
+         用于指定父模块POM的相对路径。它的默认值是../。
+    -->
+    <parent>
+        <groupId>org.fanlychie</groupId>
+        <artifactId>maven-multiple-modules-sample</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+    <groupId>org.fanlychie</groupId>
+    <artifactId>user-facade</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>user-facade</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+</project>

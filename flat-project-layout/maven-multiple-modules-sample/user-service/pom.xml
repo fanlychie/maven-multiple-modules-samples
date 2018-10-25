@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <!-- parent:
+         声明父模块。子模块不需要再声明groupId和version。
+         relativePath:
+         用于指定父模块POM的相对路径。它的默认值是../（即当前子模块项目的上一级目录）。
+    -->
+    <parent>
+        <groupId>org.fanlychie</groupId>
+        <artifactId>parent-module</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../parent-module</relativePath>
+    </parent>
+    <artifactId>user-service</artifactId>
+    <packaging>jar</packaging>
+    <name>user-service</name>
+    <url>http://maven.apache.org</url>
+    <dependencies>
+        <dependency>
+            <groupId>org.fanlychie</groupId>
+            <artifactId>user-facade</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
+</project>

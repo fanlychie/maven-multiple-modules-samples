@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.fanlychie</groupId>
+    <artifactId>maven-multiple-modules-sample</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <!-- packaging:
+         项目的打包类型。父模块项目的打包类型必须为pom。
+    -->
+    <packaging>pom</packaging>
+    <name>maven-multiple-modules-sample</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <junit.version>4.12</junit.version>
+        <servlet.version>3.1.0</servlet.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <!-- modules:
+       声明子模块。模块间的先后顺序是没有要求的，maven不需要开发者考虑模块间的依赖关系，
+       maven在构建项目时，它会对模块自动进行拓扑排序并确保在依赖模块之前构建依赖的模块项目。
+       module:
+       它的值通常是子模块项目相对于父模块POM文件的相对路径的名称。
+    -->
+    <modules>
+        <module>user-facade</module>
+        <module>blog-web</module>
+        <module>user-service</module>
+    </modules>
+    <!-- 多环境构建配置 -->
+    <profiles>
+        <!-- 开发环境配置 -->
+        <profile>
+            <!-- 标识符, 可以通过 -P[id] 来激活 --> <!-- -Pdev -->
+            <id>dev</id>
+            <!-- 激活条件 -->
+            <activation>
+                <!-- 可以通过 -D[name]=[value] 来激活 --> <!-- -Denv=dev -->
+                <property>
+                    <name>env</name>
+                    <value>dev</value>
+                </property>
+                <!-- 默认激活 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!-- 自定义的属性, 可以通过 ${label} 来引用 --> <!-- ${jdbcUrl} -->
+            <properties>
+                <jdbcUrl>jdbc:mysql://localhost:3306/dev</jdbcUrl>
+            </properties>
+            <build>
+                <defaultGoal>clean package</defaultGoal>
+            </build>
+        </profile>
+        <!-- 测试环境配置 -->
+        <profile>
+            <!-- 标识符, 可以通过 -P[id] 来激活 --> <!-- -Ptest -->
+            <id>test</id>
+            <!-- 激活条件 -->
+            <activation>
+                <!-- 可以通过 -D[name]=[value] 来激活 --> <!-- -Denv=dev -->
+                <property>
+                    <name>env</name>
+                    <value>test</value>
+                </property>
+            </activation>
+            <!-- 自定义的属性, 可以通过 ${label} 来引用 --> <!-- ${jdbcUrl} -->
+            <properties>
+                <jdbcUrl>jdbc:mysql://localhost:3306/test</jdbcUrl>
+            </properties>
+        </profile>
+    </profiles>
+    <!-- dependencyManagement:
+         依赖管理。用于统一控制管理所有子模块的依赖包版本。
+         在子模块中引入依赖包时只需要声明groupId和artifactId, maven会自动填入由父模块管理的版本号等信息。
+    -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.fanlychie</groupId>
+                <artifactId>user-facade</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.fanlychie</groupId>
+                <artifactId>user-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.servlet</groupId>
+                <artifactId>javax.servlet-api</artifactId>
+                <version>${servlet.version}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <build>
+        <!-- 类路径资源配置, 最终输出到软件包中 -->
+        <resources>
+            <resource>
+                <!-- 资源目录路径, 此路径是相对当前POM文件的位置 -->
+                <directory>src/main/resources</directory>
+                <!-- filtering=true, 能够代入具体的值替换${property}占位符 -->
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+        <!--
+             pluginManagement:
+             插件管理。与dependencyManagement相似, 子模块使用插件只需要声明groupId和artifactId,
+             maven会自动填入由父模块管理的信息。子模块可以选择性扩展或重新声明以覆盖父模块中管理的信息。
+        -->
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.tomcat.maven</groupId>
+                    <artifactId>tomcat7-maven-plugin</artifactId>
+                    <version>2.2</version>
+                    <configuration>
+                        <path>/</path>
+                        <port>80</port>
+                        <uriEncoding>UTF-8</uriEncoding>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+</project>
